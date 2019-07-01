@@ -1,0 +1,20 @@
+package ru.skillbranch.devintensive.models
+
+import ru.skillbranch.devintensive.extensions.humanizeDif
+import ru.skillbranch.devintensive.utils.Utils
+import java.util.*
+
+class TextMessage(
+    id: String,
+    from: User?,
+    chat: Chat,
+    isIncoming: Boolean = false,
+    date: Date = Date(),
+    var text: String?
+
+) : BaseMessage( id, from, chat, isIncoming, date) {
+    override fun formatMessage(): String {
+        return "ID:$id ${from?.firstName} ${from?.lastName} ${if (isIncoming) "получил" else "отправил"} сообщение "+
+                "$text ${date.humanizeDif()}"
+    }
+}
