@@ -11,7 +11,7 @@ abstract class BaseMessage(val id: String,
 abstract fun formatMessage():String
     companion object AbstractFactory{
         var lastId = -1
-        fun getTextMessage(from: User?, chat: Chat, date: Date = Date(), payload:Any, type:String, isIncoming: Boolean = false):BaseMessage{
+        fun makeMessage(from: User?, chat: Chat, date: Date = Date(), payload:Any, type:String, isIncoming: Boolean = false):BaseMessage{
             lastId++
             return when(type){
                 "text" -> TextMessage(id ="$lastId", chat = chat, date = date, from = from, text = payload as String, isIncoming = isIncoming)

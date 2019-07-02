@@ -5,7 +5,7 @@ import java.util.*
 import kotlin.text.StringBuilder
 
 object Utils {
-    fun purseFullName(fullName: String?): Pair<String?, String?> {
+    fun parseFullName(fullName: String?): Pair<String?, String?> {
         var fn: List<String>? = fullName?.split(" ")?.filter { a -> a.trim().length > 0 }
         return Pair(fn?.getOrNull(0), fn?.getOrNull(1))
     }

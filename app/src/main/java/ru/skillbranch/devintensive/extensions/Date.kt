@@ -35,7 +35,7 @@ enum class TimeUnits {
     DAY
 }
 
-fun Date.humanizeDif(): String {
+fun Date.humanizeDiff(): String {
     val now = Date()
     val deltaTime = (now.time/1000 - this.time/1000)
 

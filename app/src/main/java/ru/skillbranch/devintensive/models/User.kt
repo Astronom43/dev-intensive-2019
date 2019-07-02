@@ -24,9 +24,9 @@ data class User(
 
     companion object Factory {
         private var id: Int = -1
-        fun MakeUser(fulName: String): User {
+        fun makeUser(fulName: String): User {
             id++
-            var(fn ,ln) = Utils.purseFullName(fulName)
+            var(fn ,ln) = Utils.parseFullName(fulName)
             return User(id.toString(), fn, ln)
         }
 
