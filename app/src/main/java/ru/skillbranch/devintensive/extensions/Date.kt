@@ -32,7 +32,21 @@ enum class TimeUnits {
     SECOND,
     MINUTE,
     HOUR,
-    DAY
+    DAY;
+    fun plural(value:Int):String{
+        var time: Array<String> = when (this) {
+            SECOND -> arrayOf(" секунду", " секунды", " секунд")
+            HOUR -> arrayOf(" час", " часа", " часов")
+            DAY -> arrayOf(" день", " дня", " дней")
+            else -> arrayOf(" минуту", " минуты", " минут")
+        }
+        var delta = if (value>20) value % 10 else value
+        when (delta) {
+            in (5..20) -> return value.toString() + time[2]
+            in (2..4) -> return value.toString() + time[1]
+            else -> return value.toString() + time[0]
+        }
+    }
 }
 
 fun Date.humanizeDiff(): String {
