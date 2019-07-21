@@ -16,6 +16,8 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import ru.skillbranch.devintensive.extensions.hideKeyboard
+import ru.skillbranch.devintensive.extensions.isKeyboardClosed
+import ru.skillbranch.devintensive.extensions.isKeyboardOpen
 import ru.skillbranch.devintensive.models.Bender
 
 class MainActivity : AppCompatActivity(), View.OnClickListener, TextView.OnEditorActionListener {
@@ -77,13 +79,14 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, TextView.OnEdito
 
     override fun onClick(v: View?) {
         if (v?.id == R.id.iv_send){
+            Log.d("M_MainActivity",this.isKeyboardClosed().toString())
             workBender()
         }
 
     }
 
     private fun workBender() {
-        var (phrase, color) = benderObj.listenAnswer(messageEt.text.toString().toLowerCase())
+        var (phrase, color) = benderObj.listenAnswer(messageEt.text.toString())
         messageEt.setText("")
         val (r, g, b) = color
         benderImage.setColorFilter(Color.rgb(r, g, b), PorterDuff.Mode.MULTIPLY)
@@ -100,6 +103,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, TextView.OnEdito
         if (p1==EditorInfo.IME_ACTION_DONE){
             this.hideKeyboard()
             workBender()
+            return true
         }
         return false
     }
