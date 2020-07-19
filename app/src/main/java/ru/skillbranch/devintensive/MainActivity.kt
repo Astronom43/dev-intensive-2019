@@ -29,6 +29,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, TextView.OnEdito
     lateinit var sendBtn:ImageView
     lateinit var benderObj:Bender
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -67,8 +68,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, TextView.OnEdito
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState?.putString("STATUS",benderObj.status.name)
-        outState?.putString("QUESTION",benderObj.question.name)
+        outState.putString("STATUS",benderObj.status.name)
+        outState.putString("QUESTION",benderObj.question.name)
         Log.d("M_MainActivity","onSaveInstanceState ${benderObj.status.name}")
     }
     override fun onEditorAction(tv: TextView?, p1: Int, p2: KeyEvent?): Boolean {

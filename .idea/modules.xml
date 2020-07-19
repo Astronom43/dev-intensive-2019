@@ -2,8 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/app.iml" group="dev-intensive-2019-new/app" />
-      <module fileurl="file://$PROJECT_DIR$/dev-intensive-2019-new.iml" filepath="$PROJECT_DIR$/dev-intensive-2019-new.iml" group="dev-intensive-2019-new" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/app.iml" group="dev-intensive-2019-20/app" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/dev-intensive-2019-20.iml" filepath="$PROJECT_DIR$/.idea/dev-intensive-2019-20.iml" group="dev-intensive-2019-20" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/project-dev-intensive-2019-20.iml" filepath="$PROJECT_DIR$/.idea/modules/project-dev-intensive-2019-20.iml" group="dev-intensive-2019-20" />
     </modules>
   </component>
 </project>
