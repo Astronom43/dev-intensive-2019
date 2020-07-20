@@ -1,5 +1,8 @@
 package ru.skillbranch.devintensive.models
 
+import java.lang.Exception
+import java.lang.IllegalArgumentException
+import java.util.*
 import java.util.regex.Matcher
 
 class Bender(var status: Status = Status.NORMAL, var question: Question = Question.NAME) {
@@ -16,23 +19,41 @@ class Bender(var status: Status = Status.NORMAL, var question: Question = Questi
     }
 
     fun listenAnswer(answer: String): Pair<String, Triple<Int, Int, Int>> {
-        if (question.validQuestion(answer).length != 0) return "${question.validQuestion(answer)}\n${question.question}" to status.color
-        return if (question == Question.IDLE) {
-            question.question to status.color
-        } else if (question.answers.contains(answer.toLowerCase())) {
-            question = question.nextQuestion()
-            "Отлично - ты справился\n${question.question}" to status.color
-        } else {
-            status = status.nextStatus()
-            if (status != Status.NORMAL) {
-                "Это неправильный ответ\n${question.question}" to status.color
+
+        try {
+            if (question.validQuestion(answer)) {
+                question = question.nextQuestion()
+                return "Отлично - ты справился\n${question.question}" to status.color
             } else {
-                question = Question.NAME
-                "Это неправильный ответ. Давай все по новой\n${question.question}" to status.color
+                status=status.nextStatus()
+                if (status == Status.NORMAL) {
+                    question = Question.NAME
+                    return "Это неправильный ответ. Давай все по новой\n${question.question}" to status.color
+                }
+                return "Это неправильный ответ\n${question.question}" to status.color
             }
 
-
+        } catch (e: Exception) {
+            return "${e.message!!}\n${question.question}" to status.color
         }
+        /* if (question.validQuestion(answer).length != 0) return "${question.validQuestion(answer)}\n${question.question}" to status.color
+         return if (question == Question.IDLE) {
+             question.question to status.color
+         } else if (question.answers.contains(answer.toLowerCase())) {
+             question = question.nextQuestion()
+             "Отлично - ты справился\n${question.question}" to status.color
+         } else {
+             status = status.nextStatus()
+             if (status != Status.NORMAL) {
+                 "Это неправильный ответ\n${question.question}" to status.color
+             } else {
+                 question = Question.NAME
+                 "Это неправильный ответ. Давай все по новой\n${question.question}" to status.color
+             }
+
+
+         }*/
+
     }
 
     enum class Status(val color: Triple<Int, Int, Int>) {
@@ -51,64 +72,67 @@ class Bender(var status: Status = Status.NORMAL, var question: Question = Questi
     }
 
     enum class Question(val question: String, val answers: List<String>) {
+
         NAME("Как меня зовут?", listOf("бендер", "bender")) {
             override fun nextQuestion(): Question = PROFESSION
-            override fun validQuestion(s: String): String {
+            override fun validQuestion(s: String): Boolean {
                 val reg = """[A-ZА-ЯЁ]\S*"""
-                var regex = Regex(reg)
+                val regex = Regex(reg)
                 val matchRez = regex.matches(s)
-                if (matchRez) return ""
-                else return "Имя должно начинаться с заглавной буквы"
+                if (!matchRez) throw IllegalArgumentException("Имя должно начинаться с заглавной буквы")
+
+                return answers.contains(s.toLowerCase(Locale.ROOT))
+
             }
         },
         PROFESSION("Назови мою профессию?", listOf("сгибальщик", "bender")) {
             override fun nextQuestion(): Question = MATERIAL
-            override fun validQuestion(s: String): String {
+            override fun validQuestion(s: String): Boolean {
                 val reg = """[a-zа-яё]\S*"""
-                var regex = Regex(reg)
+                val regex = Regex(reg)
                 val matchRez = regex.matches(s)
-                if (matchRez) return ""
-                else return "Профессия должна начинаться со строчной буквы"
+                if (!matchRez) throw IllegalArgumentException("Профессия должна начинаться со строчной буквы")
+                return answers.contains(s.toLowerCase(Locale.ROOT))
             }
         },
         MATERIAL("Из чего я сделан?", listOf("металл", "дерево", "metal", "iron", "wood")) {
             override fun nextQuestion(): Question = BDAY
-            override fun validQuestion(s: String): String {
+            override fun validQuestion(s: String): Boolean {
                 val reg = """\D*"""
-                var regex = Regex(reg)
+                val regex = Regex(reg)
                 val matchRez = regex.matches(s)
-                if (matchRez) return ""
-                else return "Материал не должен содержать цифр"
+                if (!matchRez) throw IllegalArgumentException("Материал не должен содержать цифр")
+                return answers.contains(s.toLowerCase(Locale.ROOT))
             }
         },
         BDAY("Когда меня создали?", listOf("2993")) {
             override fun nextQuestion(): Question = SERIAL
-            override fun validQuestion(s: String): String {
+            override fun validQuestion(s: String): Boolean {
                 val reg = """\d*"""
-                var regex = Regex(reg)
+                val regex = Regex(reg)
                 val matchRez = regex.matches(s)
-                if (matchRez) return ""
-                else return "Год моего рождения должен содержать только цифры"
+                if (!matchRez) throw IllegalArgumentException("Год моего рождения должен содержать только цифры")
+                return answers.contains(s.toLowerCase(Locale.ROOT))
             }
         },
         SERIAL("Мой серийный номер?", listOf("2716057")) {
             override fun nextQuestion(): Question = IDLE
-            override fun validQuestion(s: String): String {
+            override fun validQuestion(s: String): Boolean {
                 val reg = """\d{7}"""
-                var regex = Regex(reg)
+                val regex = Regex(reg)
                 val matchRez = regex.matches(s)
-                if (matchRez) return ""
-                else return "Серийный номер содержит только цифры, и их 7"
+                if (!matchRez) throw IllegalArgumentException("Серийный номер содержит только цифры, и их 7")
+                return answers.contains(s.toLowerCase(Locale.ROOT))
             }
         },
         IDLE("На этом все, вопросов больше нет", listOf()) {
             override fun nextQuestion(): Question = IDLE
-            override fun validQuestion(s: String): String {
-                return ""
+            override fun validQuestion(s: String): Boolean {
+                return true
             }
         };
 
         abstract fun nextQuestion(): Question
-        abstract fun validQuestion(s: String): String
+        abstract fun validQuestion(s: String): Boolean
     }
 }
